@@ -30,12 +30,12 @@ def start_game(): # sets a new game
                ,c = {'1':None, '2':None, '3':None}
                )
     while True:
-        player_x = name, marker = input('X. Please enter your name: '), 'x'
+        player_x = input('X. Please enter your name: '), 'X'
         if player_x[0] == '' or player_x[0] == ' ':
             print('Please enter a valid name.')
             continue
 
-        player_o = name, marker = input('O. Please enter your name: '), 'o'
+        player_o =  input('O. Please enter your name: '), 'O'
         if player_o[0] == '' or player_o[0] == ' ':
             print('Please enter a valid name')
             continue
@@ -56,7 +56,7 @@ def who_goes_first(player_x, player_o): # decides who goes first (i love tuple u
 
 def play(player,grid): # Add a marker to the game grid, and detects bad inputs
     while True:
-        move_pos = list(input(f"{player[0]}, please enter a grid position to place '{player[1].upper()}': ")) #player chooses a position
+        move_pos = list(input(f"{player[0]}, please enter a grid position to place '{player[1]}': ")) #player chooses a position
 
         if len(move_pos) == 2:
             if 'a' in move_pos or 'b' in move_pos or 'c' in move_pos[0]:
@@ -150,7 +150,7 @@ def draw(grid): # visual view of the grid:
             if grid[column][str(row)] is None:
                 marker_lst.append(' ')
             else:
-                marker_lst.append(grid[column][str(row)].upper())
+                marker_lst.append(grid[column][str(row)])
 
     print('        A        B       C   \n'
           '             |       |       ')
