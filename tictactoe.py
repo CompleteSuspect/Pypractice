@@ -1,11 +1,13 @@
 import random
 def game(): #game logic
-    player_x, player_o, grid, move_counter = start_game() #each player is a tuple (name,marker). the marker is either a 'x' or 'o'
-    player_1, player_2 = who_goes_first(player_x, player_o) # player_x and player_o will be randomly chosen as player_1 or player_2
+    player_x, player_o, grid = start_game()
+    player_1, player_2 = who_goes_first(player_x, player_o)
     print(f'{player_1[0]}, you go first.')
     draw(grid)
 
-    while True: # players take turns until a win is confirmed or 9 moves used
+    move_counter = 0
+
+    while True:
         play(player_1,grid)# place marker
         draw(grid)#display grid on screen
         move_counter += 1
@@ -30,23 +32,32 @@ def start_game(): # sets a new game
                ,c = {'1':None, '2':None, '3':None}
                )
     while True:
-        player_x = input('X. Please enter your name: '), 'X'
-        if player_x[0] == '' or player_x[0] == ' ':
-            print('Please enter a valid name.')
-            continue
+        valid_check = 0
+        while valid_check < 1:
+            player_x = input('X. Please enter your name: '), 'X'
+            if player_x[0] == '' or player_x[0] == ' ':
+                print('Please enter a valid name.')
+                continue
+            else:
+                valid_check = 1
 
-        player_o =  input('O. Please enter your name: '), 'O'
-        if player_o[0] == '' or player_o[0] == ' ':
-            print('Please enter a valid name')
-            continue
+        while valid_check < 2:
+            player_o = input('O. Please enter your name: '), 'O'
+            if player_o[0] == '' or player_o[0] == ' ':
+                print('Please enter a valid name')
+                continue
+            else:
+                valid_check = 2
 
         if player_x[0] == player_o[0]:
             print('Please enter different names')
+            valid_check = 0
+            continue
         else:
-            return (player_x, player_o, grid, 0)
+            return (player_x, player_o, grid)
 
 
-def who_goes_first(player_x, player_o): # decides who goes first (i love tuple unpacking in Python!!!)
+def who_goes_first(player_x, player_o):
 
     if random.randrange(1,7) % 2 == 1:
         return player_x, player_o
@@ -56,7 +67,7 @@ def who_goes_first(player_x, player_o): # decides who goes first (i love tuple u
 
 def play(player,grid): # Add a marker to the game grid, and detects bad inputs
     while True:
-        move_pos = list(input(f"{player[0]}, please enter a grid position to place '{player[1]}': ")) #player chooses a position
+        move_pos = list(input(f"{player[0]}, please enter a grid position to place '{player[1]}': ").lower()) #player chooses a position
 
         if len(move_pos) == 2:
             if 'a' in move_pos or 'b' in move_pos or 'c' in move_pos[0]:
