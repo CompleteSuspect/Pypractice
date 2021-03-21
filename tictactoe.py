@@ -1,7 +1,10 @@
 import random
 def game(): #game logic
     player_x, player_o, grid = start_game()
-    player_1, player_2 = who_goes_first(player_x, player_o)
+    if random.randrange(1,7) % 2 == 1:
+        player_1, player_2 = player_x, player_o
+    else:
+        player_1, player_2 = player_o, player_x
     print(f'{player_1[0]}, you go first.')
     draw(grid)
 
@@ -16,6 +19,7 @@ def game(): #game logic
         if move_counter == 9:
             print('No more moves available')
             return None
+
 
         play(player_2,grid)
         draw(grid)
@@ -33,8 +37,9 @@ def start_game(): # sets a new game
                )
     while True:
         valid_check = 0
+
         while valid_check < 1:
-            player_x = input('X. Please enter your name: '), 'X'
+            player_x = input('X. Please enter your name: '), 'X' #tuple (player_name, 'X')
             if player_x[0] == '' or player_x[0] == ' ':
                 print('Please enter a valid name.')
                 continue
@@ -42,7 +47,7 @@ def start_game(): # sets a new game
                 valid_check = 1
 
         while valid_check < 2:
-            player_o = input('O. Please enter your name: '), 'O'
+            player_o = input('O. Please enter your name: '), 'O' # tuple (player_name, 'O')
             if player_o[0] == '' or player_o[0] == ' ':
                 print('Please enter a valid name')
                 continue
@@ -51,19 +56,9 @@ def start_game(): # sets a new game
 
         if player_x[0] == player_o[0]:
             print('Please enter different names')
-            valid_check = 0
             continue
         else:
             return (player_x, player_o, grid)
-
-
-def who_goes_first(player_x, player_o):
-
-    if random.randrange(1,7) % 2 == 1:
-        return player_x, player_o
-    else:
-        return player_o, player_x
-
 
 def play(player,grid): # Add a marker to the game grid, and detects bad inputs
     while True:
@@ -72,22 +67,15 @@ def play(player,grid): # Add a marker to the game grid, and detects bad inputs
         if len(move_pos) == 2:
             if 'a' in move_pos or 'b' in move_pos or 'c' in move_pos[0]:
                 if '1' in move_pos or '2' in move_pos or '3' in move_pos[1]:
-                    if grid_check(move_pos,grid) is True: # check if position is empty
+                    if grid[move_pos[0]][move_pos[1]] is None: # check if position is empty
                         grid[move_pos[0]][move_pos[1]] = player[1] # adds marker to the grid dictionary
-
                         return None
                     else:
-                        print(f'Position {move_pos[0]},{move_pos[1]} is not empty.')
+                        print(f'Position {move_pos[0]}{move_pos[1]} is not empty.')
                 else:
                     print('Invalid position.')
         else:
             print('Invalid position.')
-
-
-def grid_check(move_pos,grid): # Checks for empty space on the grid
-
-    if grid[move_pos[0]][move_pos[1]] is None:
-        return True
 
 def win_check(player,grid): #checks for a horizontal, vertical or diagonal win
 
@@ -150,6 +138,7 @@ def d_win_check(player,grid): # checks for a diagonal win
     for column, row in diag:
         if grid[column][str(row)] == player[1]:
             score_accum += 1
+
         if score_accum == 3:
             return True
 
